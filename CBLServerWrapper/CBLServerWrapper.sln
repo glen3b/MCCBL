@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CBLServerWrapper", "CBLServerWrapper\CBLServerWrapper.csproj", "{9D7106BA-167F-415B-93DD-6192579E36BA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewCBLParserCore", "NewCBLParserCore\NewCBLParserCore.csproj", "{03669626-52A4-4F4B-AF08-E3966BCBE306}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestNBTSave", "TestNBTSave\TestNBTSave.csproj", "{FF4A37A1-6F4D-4CF7-ADD0-ABC55C77059F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{9D7106BA-167F-415B-93DD-6192579E36BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9D7106BA-167F-415B-93DD-6192579E36BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9D7106BA-167F-415B-93DD-6192579E36BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03669626-52A4-4F4B-AF08-E3966BCBE306}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03669626-52A4-4F4B-AF08-E3966BCBE306}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03669626-52A4-4F4B-AF08-E3966BCBE306}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03669626-52A4-4F4B-AF08-E3966BCBE306}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FF4A37A1-6F4D-4CF7-ADD0-ABC55C77059F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF4A37A1-6F4D-4CF7-ADD0-ABC55C77059F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF4A37A1-6F4D-4CF7-ADD0-ABC55C77059F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FF4A37A1-6F4D-4CF7-ADD0-ABC55C77059F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
