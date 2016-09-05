@@ -9,6 +9,78 @@ namespace NewCBLParserCore
 {
     public static class SaveUtilities
     {
+        static bool AreCompoundsEqual(NbtCompound left, NbtCompound right)
+        {
+            if (left.Count != right.Count)
+            {
+                return false;
+            }
+
+            if (left.Name != right.Name)
+            {
+                // The tag names themselves
+                return false;
+            }
+
+            // Use default ordering: ensure we have a consistent order across both lists so we can compare more easily
+            string[] leftNames = left.Names.OrderBy(e => e).ToArray();
+            string[] rightNames = right.Names.OrderBy(e => e).ToArray();
+
+            for (int i = 0; i < leftNames.Length; i++)
+            {
+                if (!string.Equals(leftNames[i], rightNames[i], StringComparison.Ordinal))
+                {
+                    return false;
+                }
+            }
+
+            // All names are equal, now compare values
+            // Names are equal so which list we loop doesn't matter
+            // Loop by name not by index so order isn't an issue
+            foreach (string name in rightNames)
+            {
+                NbtTag leftVal = left[name], rightVal = right[name];
+                if (leftVal.TagType != rightVal.TagType)
+                {
+                    return false;
+                }
+
+                switch (leftVal.TagType)
+                {
+                    case NbtTagType.Compound:
+                        if(!AreCompoundsEqual(leftVal as NbtCompound, rightVal as NbtCompound))
+                        {
+                            return false;
+                        }
+                        break;
+                    case NbtTagType.String:
+                        if (!string.Equals(leftVal.StringValue, rightVal.StringValue, StringComparison.Ordinal))
+                        {
+                            return false;
+                        }
+                        break;
+                    case NbtTagType.ByteArray:
+                        if(!Enumerable.SequenceEqual(leftVal.ByteArrayValue, rightVal.ByteArrayValue))
+                        {
+                            return false;
+                        }
+                        break;
+                    case NbtTagType.IntArray:
+                        if (!Enumerable.SequenceEqual(leftVal.IntArrayValue, rightVal.IntArrayValue))
+                        {
+                            return false;
+                        }
+                        break;
+                    default:
+                        // No silent unexpected results
+                        throw new NotImplementedException("The tag type " + leftVal.TagType + " is not supported by the compound comparison.");
+                }
+            }
+
+            // All checks passed
+            return true;
+        }
+
         /// <summary>
         /// Saves a command block chain to a structure file at the given path.
         /// </summary>
@@ -54,7 +126,7 @@ namespace NewCBLParserCore
                 {
                     dir = height % 2 == 0 ? CommandBlockDirection.South : CommandBlockDirection.North;
                 }
-                
+
                 //foreach (NbtCompound paletteE in ((NbtList)file.RootTag.Get("palette")))
                 //{
                 //    if (paletteE == GetPaletteSignature(CommandBlockInfo.FromEnums(chain[i].Data, dir)))
@@ -69,7 +141,25 @@ namespace NewCBLParserCore
                 var paletteList = file.RootTag.Get<NbtList>("palette");
 
                 // TODO does NbtCompound implement value equality? If not, we may have to use the general purpose IndexOf with our own comparison interface
-                state = paletteList.IndexOf(palSig);
+                // Tested and does not
+
+                // state = paletteList.IndexOf(palSig);
+
+                for (int j = 0; j < paletteList.Count; j++)
+                {
+                    NbtCompound curPal = paletteList[i] as NbtCompound;
+                    if (curPal == null)
+                    {
+                        continue;
+                    }
+
+                    if(AreCompoundsEqual(curPal, palSig))
+                    {
+                        // We found an equivalent palette entry
+                        state = j;
+                        break;
+                    }
+                }
 
                 if (state == -1)
                 {
@@ -93,9 +183,9 @@ namespace NewCBLParserCore
                         });
 
 
-                block.Add(new NbtInt("state",state));
+                block.Add(new NbtInt("state", state));
                 file.RootTag.Get<NbtList>("blocks").Add(block);
-                
+
             }
             file.SaveToFile(savePath, NbtCompression.GZip);
 
@@ -171,5 +261,5 @@ namespace NewCBLParserCore
                 }
             };
         }
-    } 
+    }
 }
