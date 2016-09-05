@@ -30,8 +30,8 @@ namespace TestNBTSave
 
             // Construct further test elements
 
-            SaveUtilities.Save(test, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmdTest.nbt"));
-            //SaveUtilities.WriteCommandBlockToStructure(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmd.nbt"), "testfor @a", CommandBlockFlags.Impulse | CommandBlockFlags.AlwaysOn, CommandBlockDirection.Up);
+            StructureFileCompiler.Instance.Save(test, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmdTest.nbt"));
+            //NbtSaveUtilities.WriteCommandBlockToStructure(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmd.nbt"), "testfor @a", CommandBlockFlags.Impulse | CommandBlockFlags.AlwaysOn, CommandBlockDirection.Up);
         }
     }
 }

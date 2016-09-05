@@ -7,8 +7,21 @@ using System.Threading.Tasks;
 
 namespace NewCBLParserCore
 {
-    public static class SaveUtilities
+    /// <summary>
+    /// Compiles command chains into isolated structure files.
+    /// </summary>
+    public class StructureFileCompiler : ICommandCompiler
     {
+        public static StructureFileCompiler Instance
+        {
+            get
+            {
+                return inst;
+            }
+        }
+
+        private static readonly StructureFileCompiler inst = new StructureFileCompiler();
+
         static bool AreCompoundsEqual(NbtCompound left, NbtCompound right)
         {
             if (left.Count != right.Count)
@@ -82,10 +95,21 @@ namespace NewCBLParserCore
         }
 
         /// <summary>
-        /// Saves a command block chain to a structure file at the given path.
+        /// Preprocesses a command chain to work around turn-conditionals and other quirks that may occur in the underlying compilation.
+        /// </summary>
+        /// <param name="chain">The chain which will be preprocessed in place.</param>
+        public void Preprocess(CommandChainEntry chain)
+        {
+
+        }
+
+        /// <summary>
+        /// Saves a command block chain to a structure file at the given path. Does not attempt to modify it (e.g. for conditionals on turns).
+        /// The file argument will be overwritten with a GZip-compressed NBT format structure file.
         /// </summary>
         /// <param name="chainStart">The beginning of the command block chain.</param>
-        public static void Save(CommandChainEntry chainStart, string savePath)
+        /// <param name="savePath">The path to the structure file where this command chain will be saved.</param>
+        public void Save(CommandChainEntry chainStart, string savePath)
         {
             CommandChainEntry[] chain = chainStart.EnumerateChain().ToArray();
             CommandBlockDirection dir = CommandBlockDirection.East;
@@ -207,7 +231,7 @@ namespace NewCBLParserCore
         /// <param name="command">The command to put inside the single command block in the structure.</param>
         /// <param name="properties">The properties of the single command block in the structure.</param>
         /// <param name="dir">The direction in which the command block will be facing.</param>
-        public static void WriteCommandBlockToStructure(string filePath, string command, CommandBlockFlags properties, CommandBlockDirection dir)
+        public void WriteCommandBlockToStructure(string filePath, string command, CommandBlockFlags properties, CommandBlockDirection dir)
         {
             NbtFile file = new NbtFile();
 
