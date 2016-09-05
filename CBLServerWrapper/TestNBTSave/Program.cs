@@ -12,7 +12,26 @@ namespace TestNBTSave
     {
         static void Main(string[] args)
         {
-            SaveUtilities.WriteCommandBlockToStructure(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmd.nbt"), "testfor @a", CommandBlockFlags.Impulse | CommandBlockFlags.AlwaysOn, CommandBlockDirection.Up);
+            CommandChainEntry test = new CommandChainEntry()
+            {
+                Command = "setblock ~ ~1 ~ minecraft:dirt",
+                Data = CommandBlockFlags.Repeat | CommandBlockFlags.AlwaysOn
+            };
+
+            for(int i = 1; i <= 40; i++)
+            {
+                CommandChainEntry last = test.EnumerateChain().Last();
+                last.NextElement = new CommandChainEntry()
+                {
+                    Command = "say This is block #" + i,
+                    Data = CommandBlockFlags.Chain | CommandBlockFlags.Conditional
+                };
+            }
+
+            // Construct further test elements
+
+            SaveUtilities.Save(test, Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmdTest.nbt"));
+            //SaveUtilities.WriteCommandBlockToStructure(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "cmd.nbt"), "testfor @a", CommandBlockFlags.Impulse | CommandBlockFlags.AlwaysOn, CommandBlockDirection.Up);
         }
     }
 }

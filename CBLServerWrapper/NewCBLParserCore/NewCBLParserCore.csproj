@@ -47,6 +47,7 @@
     <Compile Include="CommandBlockDirection.cs" />
     <Compile Include="CommandBlockFlags.cs" />
     <Compile Include="CommandBlockInfo.cs" />
+    <Compile Include="CommandChainEntry.cs" />
     <Compile Include="SaveUtilities.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
