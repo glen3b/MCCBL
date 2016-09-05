@@ -66,7 +66,7 @@ namespace NewCBLParserCore
             {
                 if (_flags.HasFlag(CommandBlockFlags.Repeat))
                 {
-                    return "minecraft:repeat_command_block";
+                    return "minecraft:repeating_command_block";
                 }
                 if (_flags.HasFlag(CommandBlockFlags.Chain))
                 {

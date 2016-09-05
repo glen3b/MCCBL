@@ -147,13 +147,13 @@ namespace NewCBLParserCore
 
                 for (int j = 0; j < paletteList.Count; j++)
                 {
-                    NbtCompound curPal = paletteList[i] as NbtCompound;
+                    NbtCompound curPal = paletteList[j] as NbtCompound;
                     if (curPal == null)
                     {
                         continue;
                     }
 
-                    if(AreCompoundsEqual(curPal, palSig))
+                    if (AreCompoundsEqual(curPal, palSig))
                     {
                         // We found an equivalent palette entry
                         state = j;
@@ -169,8 +169,15 @@ namespace NewCBLParserCore
                     state = paletteList.Count - 1;
                 }
                 NbtCompound block = new NbtCompound();
-                block.Add(new NbtList("pos") { new NbtInt(columnFlat), new NbtInt(height), new NbtInt(rowFlat) });
-                block.Add(new NbtCompound("nbt")
+                if (rowFlat % 2 == 0)
+                {
+                    block.Add(new NbtList("pos") { new NbtInt(columnFlat), new NbtInt(height), new NbtInt(rowFlat) });
+                }
+                else
+                {
+                    block.Add(new NbtList("pos") { new NbtInt(31 - columnFlat), new NbtInt(height), new NbtInt(rowFlat) });
+                }
+                    block.Add(new NbtCompound("nbt")
                         {
                             new NbtByte("auto", Convert.ToByte(chain[i].Data.HasFlag(CommandBlockFlags.AlwaysOn))),
                             new NbtString("Command",chain[i].Command),
@@ -183,13 +190,14 @@ namespace NewCBLParserCore
                         });
 
 
-                block.Add(new NbtInt("state", state));
-                file.RootTag.Get<NbtList>("blocks").Add(block);
+                    block.Add(new NbtInt("state", state));
+                    file.RootTag.Get<NbtList>("blocks").Add(block);
+
+                }
+                file.SaveToFile(savePath, NbtCompression.GZip);
 
             }
-            file.SaveToFile(savePath, NbtCompression.GZip);
-
-        }
+        
 
 
         /// <summary>

@@ -15,7 +15,7 @@ namespace TestNBTSave
             CommandChainEntry test = new CommandChainEntry()
             {
                 Command = "setblock ~ ~1 ~ minecraft:dirt",
-                Data = CommandBlockFlags.Repeat | CommandBlockFlags.AlwaysOn
+                Data = CommandBlockFlags.Repeat
             };
 
             for(int i = 1; i <= 40; i++)
@@ -24,7 +24,7 @@ namespace TestNBTSave
                 last.NextElement = new CommandChainEntry()
                 {
                     Command = "say This is block #" + i,
-                    Data = CommandBlockFlags.Chain | CommandBlockFlags.Conditional
+                    Data = CommandBlockFlags.Chain | CommandBlockFlags.Conditional | CommandBlockFlags.AlwaysOn
                 };
             }
 
